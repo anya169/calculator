@@ -84,8 +84,14 @@ function appendSymbol(symbol) {
     let lastSymbol = display.value[display.value.length - 1];
     // Проверяем, что последний и вводимый символы - не операторы
     if (operators.includes(lastSymbol) && operators.includes(symbol)){
-        // Если так, то обрезаем последний введеный оператор и добавляем новый вводимый
-        display.value = display.value.slice(0, -1) + symbol;
+        // Разрешаем вводить унарный минус
+        if (symbol === '-') {
+            // Не заменяем, а добавляем минус (будет знак числа)
+            display.value += symbol;
+        } else {
+            // Для других операторов - заменяем последний
+            display.value = display.value.slice(0, -1) + symbol;
+        }
     } else {
         // Если нет, то добавляем цифру на дисплей
         display.value += symbol;
@@ -119,6 +125,19 @@ function calculate(){
             // Второй - до которого мы "режем" строку (невключительно)
             // В нашем случае первый аргумент - значение переменной стартовой позиции текущего числа,
             // Второй - позиция встретившегося оператора (так как "режем" невключительно)
+
+            // Проверяем, не является ли минус унарным
+            // для числа в начале
+            if (i === 0 && displayValue[i] == '-'){
+                // Пропускаем итерацию
+                continue;
+            }
+            // а также не является ли унарным после другого оператора
+            if (displayValue[i] == '-' && (displayValue[i-1] === '+' || displayValue[i-1] === '-' || displayValue[i-1] === '*' || displayValue[i-1] === '/')){
+                // Пропускаем итерацию
+                continue;
+            }
+
             // Помним, что мы работаем со строками, поэтому приведем ее к числу с помощью parseFloat
             numberBeforeOperator = parseFloat(displayValue.slice(numberStartPosition, i))
             // Следующее число начнется с позиции, последующей за позицей встретившегося оператора
