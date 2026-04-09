@@ -202,7 +202,7 @@ function calculate(){
         }
     }
 
-    display.value = result;
+    display.value = result.toFixed(5);
     
    
 }
