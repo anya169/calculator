@@ -59,6 +59,56 @@ function appendSymbol(symbol) {
     } 
 }
 
+// Функция вычисления результата
+function calculate(){
+    let displayValue = display.value;
+
+    // Здесь будем считать результат
+    let result = 0;
+    // Массив для хранения чисел в операции
+    let numberArray = [];
+    // Массив для хранения операторов в операции
+    let operatorArray = [];
+    
+    // Переменная, в которой будем считать число, до встретившегося оператора
+    let numberBeforeOperator = 0;
+    // Переменная, в которой будем считать позицию начала числа в строке операции. 
+    // Первое число на нулевой позиции (помним, что индексация массивов начинается с 0)
+    let numberStartPosition = 0;
+
+    // Запускаем цикл, который пройдется по всем символам выражения на дисплее
+    for (let i = 0; i < displayValue.length; i++){
+        // Если нам встретился оператор - получаем число, которое стояло него
+        if (displayValue[i] === '+' || displayValue[i] === '-' || displayValue[i] === '*' || displayValue[i] === '/'){
+            // Функция slice (от англ. резать) принимает два аргумента
+            // Первый - позиция символа (элемента) в строке (массиве), с которого мы "режем" строку
+            // Второй - до которого мы "режем" строку (невключительно)
+            // В нашем случае первый аргумент - значение переменной стартовой позиции текущего числа,
+            // Второй - позиция встретившегося оператора (так как "режем" невключительно)
+            // Помним, что мы работаем со строками, поэтому приведем ее к числу с помощью parseInt
+            numberBeforeOperator = parseInt(displayValue.slice(numberStartPosition, i))
+            // Следующее число начнется с позиции, последующей за позицей встретившегося оператора
+            numberStartPosition = i + 1;
+            // Добавим в массивы полученные число и оператор
+            numberArray.push(numberBeforeOperator);
+            operatorArray.push(displayValue[i]);
+        }
+    }
+
+    // Последнее число не обрабатывается в цикле, так как после него не стоит оператор, мы не попадаем в условие
+    // Добавим его отдельно - "режем" с запомненной позиции до конца строки
+    numberBeforeOperator = parseInt(displayValue.slice(numberStartPosition, displayValue.length))
+    numberArray.push(numberBeforeOperator);
+    
+    // В браузере можем посмотреть значения массивов
+    console.log(numberArray);
+    console.log(operatorArray);
+    
+}
+
+// Привязываем кнопку "Равно"
+buttonEquals.addEventListener('click', calculate);
+
 // Привязываем кнопки цифр
 button0.addEventListener('click', function() { appendSymbol('0'); });
 button1.addEventListener('click', function() { appendSymbol('1'); });
