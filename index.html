@@ -1,15 +1,62 @@
 <!DOCTYPE html> 
 <html lang="ru"> <!-- Устанавливаем русский язык -->
 <head> <!-- Настройки отображения в браузере -->
-  <meta charset="UTF-8"> <!-- Кодировка символов -->
-  <title>Простой калькулятор</title> <!-- Название страницы на вкладке браузера -->
-  <link href="/src/css/style.css" rel="stylesheet"> <!-- Подключение файла с стилями -->
+    <meta charset="UTF-8"> <!-- Кодировка символов -->
+    <title>Простой калькулятор</title> <!-- Название страницы на вкладке браузера -->
+    <link href="/src/css/style.css" rel="stylesheet"> <!-- Подключение файла с стилями -->
 </head>
 
 <body> <!-- Основное содержимое страницы -->
 
-  <h1>Здесь будет наш калькулятор</h1> <!-- Тестовый заголовок страницы -->
+    <h1>Калькулятор</h1> <!-- Заголовок страницы -->
 
-  <script type="module" src="/src/js/script.js"></script> <!-- Подключение скрипта -->
+    <div class="calculator"> <!-- Основной контейнер калькулятора: у всех элементов есть название class - они нужны, чтобы задавать стиль элементам -->
+        <input class="calculator__display" id="display" readonly value="0"> <!-- Дисплей калькулятора:
+        присвоим ему айди - ключ, по которому будем обращаться к элементу в нашем скрипте.
+        readonly - параметр, который делает наше поле доступным только для чтения (изменять значение будем только кнопками калькулятора, а не вводом с клавиатуры).
+        value - параметр, который задает значение по умолчанию. На калькуляторе сначала всегда видно ноль. -->
+        
+        <!-- Кнопки на нашем калькуляторе -->
+        <div class="calculator__buttons">
+            <div class="calculator__row"> <!-- Ряд кнопок -->
+                <button class="calculator__btn calculator__btn--delete" id="button-delete">Стереть</button> <!-- Кнопка "Стереть" в первом ряду/ Ее стиль будет отличаться, поэтому добавляем модификатор --delete -->
+            </div>
+            
+            <!-- Операторы на калькуляторе -->
+            <div class="calculator__row"> 
+                <button class="calculator__btn" id="button-addition">+</button>
+                <button class="calculator__btn" id="button-subtraction">-</button>
+                <button class="calculator__btn" id="button-multiplication">*</button>
+                <button class="calculator__btn" id="button-division">/</button>
+            </div>
+
+            <!-- Цифры на калькуляторе -->
+            <div class="calculator__row"> 
+                <button class="calculator__btn" id="button-7">7</button>
+                <button class="calculator__btn" id="button-8">8</button>
+                <button class="calculator__btn" id="button-9">9</button>
+            </div>
+            <div class="calculator__row"> 
+                <button class="calculator__btn" id="button-4">4</button>
+                <button class="calculator__btn" id="button-5">5</button>
+                <button class="calculator__btn" id="button-6">6</button>
+            </div>
+            <div class="calculator__row"> 
+                <button class="calculator__btn" id="button-1">1</button>
+                <button class="calculator__btn" id="button-2">2</button>
+                <button class="calculator__btn" id="button-3">3</button>
+            </div>
+            <div class="calculator__row"> 
+                <button class="calculator__btn" id="button-0">0</button>
+            </div>
+            
+            <div class="calculator__row"> 
+                <button class="calculator__btn calculator__btn--equals" id="button-equals">=</button> <!-- Кнопка "Равно" -->
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="/src/js/script.js"></script> <!-- Подключение скрипта -->
 </body>
 </html>
+
