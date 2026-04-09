@@ -20,6 +20,7 @@ const buttonAddition = document.getElementById('button-addition');       // +
 const buttonSubtraction = document.getElementById('button-subtraction'); // -
 const buttonMultiplication = document.getElementById('button-multiplication'); // *
 const buttonDivision = document.getElementById('button-division');       // /
+const buttonPoint = document.getElementById('button-point');             // .
 
 // Кнопка "Равно"
 const buttonEquals = document.getElementById('button-equals');
@@ -40,25 +41,56 @@ function appendSymbol(symbol) {
     // Добавляем проверку условия об ошибке
     if (display.value === '0' || display.value === 'Ошибка: деление на 0') {
         // Заменяем ноль на введеный символ, только если это число - операция не может начинаться с оператора
-        // Проверяем, что вводимый символ - не оператор
-        if (!operators.includes(symbol)) {
-            display.value = symbol;
-        }
-    } 
-    // Если уже что-то введено, добавляем символ к строке в дисплее
-    // Помним, что мы работаем со строками, поэтому в нашем случае "2" + "3" = "23", а не "5"   
-    else {
-        // Проверяем, чему равен последний символ, чтобы не дать пользователю ввести несколько операторов подряд
-        let lastSymbol = display.value[display.value.length - 1];
-        // Проверяем, что последний и вводимый символы - не операторы
-        if (operators.includes(lastSymbol) && operators.includes(symbol)){
-            // Если так, то обрезаем последний введеный оператор и добавляем новый вводимый
-            display.value = display.value.slice(0, -1) + symbol;
-        } else {
-            // Если нет, то добавляем цифру на дисплей
+        // Даем пользователю возможность начать операцию с десятичного числа 0.
+        if (symbol === '.'){
             display.value += symbol;
+            return;
         }
+        // Проверяем, что вводимый символ - не оператор     
+        else if (!operators.includes(symbol)) {
+            display.value = symbol;
+            return;
+        }   
+        
     } 
+    // Проверка на множественные точки в одном числе
+    if (symbol === '.') {
+        // Находим позицию последнего оператора
+        let lastOperatorPosition = -1;
+        // Запускаем обратный цикл - пройдем с конца строки до ее начала
+        for (let i = display.value.length - 1; i >= 0; i--) {
+            // Если встречается оператор, запоминаем его позицию в строке - получаем последний оператор таким образом
+            if (operators.includes(display.value[i])) {
+                lastOperatorPosition = i;
+                // Останавливаемся, как только нашли 
+                break;
+            }
+        }
+        
+        // Берём часть строки после последнего оператора (текущее число) - "режем" от конца до полученной позиции символа
+        let currentNumber = display.value.slice(lastOperatorPosition + 1);
+        // Если в текущем числе уже есть точка — не добавляем
+        // Также возможна ситуация, когда пользователь вводит точку после оператора (невозможно)
+        // В таком случае нам вернется пустая строка - срез от конца до последнего символа
+        if (currentNumber.includes('.') || currentNumber === "") {
+            return;
+        }
+    }
+
+    // Если мы не зашли в другие условия (не дошли до return, останавливающий цикл), добавляем символ к строке в дисплее
+    // Помним, что мы работаем со строками, поэтому в нашем случае "2" + "3" = "23", а не "5"   
+
+    // Проверяем, чему равен последний символ, чтобы не дать пользователю ввести несколько операторов подряд
+    let lastSymbol = display.value[display.value.length - 1];
+    // Проверяем, что последний и вводимый символы - не операторы
+    if (operators.includes(lastSymbol) && operators.includes(symbol)){
+        // Если так, то обрезаем последний введеный оператор и добавляем новый вводимый
+        display.value = display.value.slice(0, -1) + symbol;
+    } else {
+        // Если нет, то добавляем цифру на дисплей
+        display.value += symbol;
+    }
+    
 }
 
 // Функция вычисления результата
@@ -87,8 +119,8 @@ function calculate(){
             // Второй - до которого мы "режем" строку (невключительно)
             // В нашем случае первый аргумент - значение переменной стартовой позиции текущего числа,
             // Второй - позиция встретившегося оператора (так как "режем" невключительно)
-            // Помним, что мы работаем со строками, поэтому приведем ее к числу с помощью parseInt
-            numberBeforeOperator = parseInt(displayValue.slice(numberStartPosition, i))
+            // Помним, что мы работаем со строками, поэтому приведем ее к числу с помощью parseFloat
+            numberBeforeOperator = parseFloat(displayValue.slice(numberStartPosition, i))
             // Следующее число начнется с позиции, последующей за позицей встретившегося оператора
             numberStartPosition = i + 1;
             // Добавим в массивы полученные число и оператор
@@ -99,7 +131,7 @@ function calculate(){
 
     // Последнее число не обрабатывается в цикле, так как после него не стоит оператор, мы не попадаем в условие
     // Добавим его отдельно - "режем" с запомненной позиции до конца строки
-    numberBeforeOperator = parseInt(displayValue.slice(numberStartPosition, displayValue.length))
+    numberBeforeOperator = parseFloat(displayValue.slice(numberStartPosition, displayValue.length))
     if (!isNaN(numberBeforeOperator)) {
         numberArray.push(numberBeforeOperator);
     } else {
@@ -136,6 +168,7 @@ function calculate(){
             result = result / nextNumber;
         }
     }
+
     display.value = result;
     
    
@@ -161,3 +194,4 @@ buttonAddition.addEventListener('click', function() { appendSymbol('+'); });
 buttonSubtraction.addEventListener('click', function() { appendSymbol('-'); });
 buttonMultiplication.addEventListener('click', function() { appendSymbol('*'); });
 buttonDivision.addEventListener('click', function() { appendSymbol('/'); });
+buttonPoint.addEventListener('click', function() { appendSymbol('.'); });
