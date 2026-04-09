@@ -108,6 +108,30 @@ function calculate(){
      // В браузере можем посмотреть значения массивов
     console.log(numberArray);
     console.log(operatorArray);
+    
+     // Начнем работать с полученными массивами
+    // Начнем с первого числа
+    result += numberArray[0]
+    
+    // Проходимся в цикле по всем операторам
+    for (let i = 0; i < operatorArray.length; i++) {
+        // Получаем число, которое стояло после оператора
+        let nextNumber = numberArray[i + 1];
+        let operator = operatorArray[i];
+        
+        // В зависимости от оператора выполняем соответствующую операцию
+        if (operator === '+') {
+            result = result + nextNumber;
+        } else if (operator === '-') {
+            result = result - nextNumber;
+        } else if (operator === '*') {
+            result = result * nextNumber;
+        } else if (operator === '/') {
+            result = result / nextNumber;
+        }
+    }
+    display.value = result;
+    
    
 }
 
