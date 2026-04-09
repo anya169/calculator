@@ -172,11 +172,7 @@ function calculate(){
         operatorArray.pop()
     }
 
-     // В браузере можем посмотреть значения массивов
-    console.log(numberArray);
-    console.log(operatorArray);
-    
-     // Начнем работать с полученными массивами
+    // Начнем работать с полученными массивами
     // Начнем с первого числа
     result += numberArray[0]
     
@@ -206,6 +202,14 @@ function calculate(){
     
    
 }
+
+// Функция "Стереть"
+function deleteAll(){
+    display.value = "0";
+}
+
+// Привязываем кнопку "Стереть"
+buttonDelete.addEventListener('click', deleteAll);
 
 // Привязываем кнопку "Равно"
 buttonEquals.addEventListener('click', calculate);
