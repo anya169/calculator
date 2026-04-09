@@ -98,12 +98,17 @@ function calculate(){
     // Последнее число не обрабатывается в цикле, так как после него не стоит оператор, мы не попадаем в условие
     // Добавим его отдельно - "режем" с запомненной позиции до конца строки
     numberBeforeOperator = parseInt(displayValue.slice(numberStartPosition, displayValue.length))
-    numberArray.push(numberBeforeOperator);
-    
-    // В браузере можем посмотреть значения массивов
+    if (!isNaN(numberBeforeOperator)) {
+        numberArray.push(numberBeforeOperator);
+    } else {
+        // Удаляем последний оператор - он бесполезный
+        operatorArray.pop()
+    }
+
+     // В браузере можем посмотреть значения массивов
     console.log(numberArray);
     console.log(operatorArray);
-    
+   
 }
 
 // Привязываем кнопку "Равно"
